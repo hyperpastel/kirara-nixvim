@@ -1,14 +1,17 @@
 {
   inputs = {
-    nixpkgs.url = "github:nix-os/nixpkgs?ref=nixos-unstable";
-    nixvim.url = "github:nix-community/nixvim";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     flake-utils.url = "github:numtide/flake-utils";
   };
 
   outputs = { self, nixpkgs, nixvim, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = nixpkgs.legacyPackages." $system";
+        pkgs = nixpkgs.legacyPackages.${system};
         lib = pkgs.lib;
 
         simplePluginsList = [
@@ -20,7 +23,6 @@
           "cmp-buffer"
           "cmp-calc"
           "cmp-path"
-          "treesitter"
           "nvim-tree"
         ];
 
@@ -94,6 +96,11 @@
                 };
               };
             };
+
+            treesitter = {
+              enable = true;
+              ensureInstalled = [ ];
+            };
           };
 
           keymaps = [
@@ -140,16 +147,17 @@
 
         };
 
-        finalSettings = lib.recursiveUpdate simplePluginsList' defaultSettings;
-        nvim = nixvim.legacyPackages."$system".makeNixvim finalSettings;
+        cfg' = lib.recursiveUpdate simplePluginsList' defaultSettings;
+        meow' = cfg: nixvim.legacyPackages.${system}.makeNixvim cfg;
 
       in
+      rec
 
       {
-        config = finalSettings;
-        apps.default = flake-utils.lib.mkApp { drv = nvim; };
+        cfg = cfg';
+        meow = meow';
         devShells.default = pkgs.mkShell {
-          buildInputs = [ nvim ];
+          buildInputs = [ meow cfg ];
         };
       }
     );
