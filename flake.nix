@@ -150,12 +150,19 @@
         cfg' = lib.recursiveUpdate simplePluginsList' defaultSettings;
         meow' = cfg: nixvim.legacyPackages.${system}.makeNixvim cfg;
 
+        functions' = {
+          imap = imap;
+          nmap = nmap;
+          map = map;
+        };
+
       in
       rec
 
       {
         cfg = cfg';
         meow = meow';
+        functions = functions';
         devShells.default = pkgs.mkShell {
           buildInputs = [ meow cfg ];
         };
