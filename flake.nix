@@ -24,6 +24,7 @@
           "cmp-calc"
           "cmp-path"
           "nvim-tree"
+          "nix"
         ];
 
         simplePluginsList' = {
@@ -63,6 +64,32 @@
               keymaps = {
                 "<leader>ff" = "find_files";
               };
+            };
+
+            lsp = {
+              enable = true;
+              servers = {
+                nixd.enable = true;
+              };
+
+              keymaps = {
+                lspBuf = {
+                  "<leader>f" = "format";
+                  "<leader>r" = "rename";
+                  "<leader>a" = "code_action";
+                  K = "hover";
+                  gD = "references";
+                  gd = "definition";
+                  gi = "implementation";
+                  gt = "type_definition";
+                };
+
+                diagnostic = {
+                  "<leader>e" = "open_float";
+                };
+                silent = true;
+              };
+
             };
 
             cmp = {
@@ -106,13 +133,13 @@
           keymaps = [
             (imap "jk" "<esc>")
 
-            (nmap "<C-n>" ":NvimTreeToggle<CR>")
-            (nmap "<Esc>" ":noh<CR>")
+            (nmap "<C-n>" "<Cmd>NvimTreeToggle<CR>")
+            (nmap "<Esc>" "<Cmd>noh<CR>")
             (nmap "H" "^")
             (nmap "L" "$")
-            (nmap "<right>" "<cmd>bn<CR>")
-            (nmap "<left>" "<cmd>bp<CR>")
-            (nmap ";w" ":w<CR>")
+            (nmap "<right>" "<Cmd>bn<CR>")
+            (nmap "<left>" "<Cmd>bp<CR>")
+            (nmap ";w" "<Cmd>w<CR>")
 
             (map "<C-h>" "<C-w>h")
             (map "<C-j>" "<C-w>j")
@@ -127,6 +154,7 @@
             softtabstop = 4;
             tabstop = 4;
             noexpandtab = true;
+            mapleader = " ";
           };
 
           opts = {
