@@ -173,6 +173,26 @@
             fillchars.eob = " ";
           };
 
+          extraConfigLua = ''
+            vim.diagnostic.config({
+            	virtual_text = {
+            	  prefix = "",
+            	  format = function(diagnostic)
+            	    if diagnostic.severity == vim.diagnostic.severity.ERROR then
+            	      return string.format("🩸 %s", diagnostic.message)
+            	    elseif diagnostic.severity == vim.diagnostic.severity.WARN then
+            	      return string.format("✨ %s", diagnostic.message)
+                  elseif diagnostic.severity == vim.diagnostic.severity.INFO then
+            	      return string.format("☔️ %s", diagnostic.message)
+            	    else
+            	      return string.format("💫 %s", diagnostic.message)
+            	  end
+            	end
+            	}
+            })
+          '';
+
+
         };
 
         cfg' = lib.recursiveUpdate simplePluginsList' defaultSettings;
