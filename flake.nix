@@ -139,6 +139,7 @@
             (nmap "L" "$")
             (nmap "<right>" "<Cmd>bn<CR>")
             (nmap "<left>" "<Cmd>bp<CR>")
+            (nmap "<leader>x" "<Cmd>bd<CR>")
             (nmap ";w" "<Cmd>w<CR>")
 
             (map "<C-h>" "<C-w>h")
