@@ -20,8 +20,8 @@
           "harpoon"
           "luasnip"
           "cmp_luasnip"
-          "cmp-buffer"
           "cmp-calc"
+          "cmp-nvim-lsp"
           "cmp-path"
           "nvim-tree"
           "nix"
@@ -33,6 +33,13 @@
 
         imap = key: action: {
           mode = "i";
+          key = key;
+          action = action;
+          options.silent = true;
+        };
+
+        vmap = key: action: {
+          mode = "v";
           key = key;
           action = action;
           options.silent = true;
@@ -104,8 +111,8 @@
                     end'';
                 };
                 sources = [
+                  { name = "nvim_lsp"; }
                   { name = "luasnip"; }
-                  { name = "buffer"; }
                   { name = "calc"; }
                   { name = "path"; }
                 ];
@@ -141,6 +148,9 @@
             (nmap "<left>" "<Cmd>bp<CR>")
             (nmap "<leader>x" "<Cmd>bd<CR>")
             (nmap ";w" "<Cmd>w<CR>")
+
+            (vmap "H" "^")
+            (vmap "L" "$")
 
             (map "<C-h>" "<C-w>h")
             (map "<C-j>" "<C-w>j")
