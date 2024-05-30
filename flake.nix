@@ -65,7 +65,7 @@
           enableMan = false;
           colorschemes.catppuccin = {
             enable = true;
-            flavour = "frappe";
+            settings.flavour = "frappe";
           };
 
           plugins = {
