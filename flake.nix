@@ -63,7 +63,10 @@
 
         defaultSettings = {
           enableMan = false;
-          colorschemes.gruvbox.enable = true;
+          colorschemes.catppuccin = {
+            enable = true;
+            flavour = "frappe";
+          };
 
           plugins = {
             telescope = {
