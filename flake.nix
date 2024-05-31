@@ -219,14 +219,13 @@
         };
 
       in
-      rec
 
       {
         cfg = cfg';
         meow = meow';
         fn = fn';
         devShells.default = pkgs.mkShell {
-          buildInputs = [ meow cfg ];
+          buildInputs = [ (meow' cfg') ];
         };
       }
     );
