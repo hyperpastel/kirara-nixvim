@@ -22,16 +22,16 @@
         lib = pkgs.lib;
 
         simplePluginsList = [
-          "lualine"
-          "bufferline"
           "harpoon"
-          "luasnip"
           "cmp_luasnip"
           "cmp-calc"
           "cmp-nvim-lsp"
           "cmp-path"
           "nvim-tree"
           "nix"
+          "friendly-snippets"
+          "which-key"
+          "gitsigns"
         ];
 
         simplePluginsList' = {
@@ -74,6 +74,52 @@
             settings.flavour = "frappe";
           };
 
+          extraConfigLuaPre = ''
+            package.preload["jsregexp"] = package.loadlib("${pkgs.lua51Packages.jsregexp}/lib/lua/5.1/jsregexp/core.so", "luaopen_jsregexp_core");
+
+            local expand_snippet = function(fallback)
+                local cmp = require("cmp")
+                local luasnip = require("luasnip")
+
+                if cmp.visible() then
+                    if luasnip.expandable() then
+                        luasnip.expand()
+                    else
+                        cmp.confirm({select = true})
+                    end
+                else
+                    fallback()
+                end
+            end
+
+            local jump_up = function(fallback)
+                    local cmp = require("cmp")
+                    local luasnip = require("luasnip")
+
+                    if cmp.visible() then
+                      cmp.select_prev_item()
+                    elseif luasnip.locally_jumpable(num) then
+                        luasnip.jump(-1)
+                    else
+                        fallback()
+                    end
+                end
+
+
+            local jump_down = function(fallback)
+                    local cmp = require("cmp")
+                    local luasnip = require("luasnip")
+
+                    if cmp.visible() then
+                      cmp.select_next_item()
+                    elseif luasnip.locally_jumpable(num) then
+                        luasnip.jump(1)
+                    else
+                        fallback()
+                    end
+                end
+          '';
+
           plugins = {
             telescope = {
               enable = true;
@@ -82,10 +128,16 @@
               };
             };
 
+            luasnip = {
+              enable = true;
+              fromVscode = [ { } ];
+            };
+
             lsp = {
               enable = true;
               servers = {
                 nixd.enable = true;
+                bashls.enable = true;
               };
 
               keymaps = {
@@ -129,21 +181,17 @@
                 preselect = "cmp.PreselectMode.None";
 
                 mapping = {
-                  "<CR>" = "cmp.mapping.confirm({ select = true })";
+                  "<CR>" = "cmp.mapping(expand_snippet)";
                   "<C-p>" = "cmp.mapping.select_prev_item()";
                   "<C-n>" = "cmp.mapping.select_next_item()";
                   "<C-Space>" = "cmp.mapping.complete()";
                   "<C-e>" = "cmp.mapping.close()";
-                  "<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
-                  "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
+                  "<S-Tab>" = "cmp.mapping(jump_up, {'i', 's'})";
+                  "<Tab>" = "cmp.mapping(jump_down, {'i', 's'})";
                 };
               };
             };
 
-            treesitter = {
-              enable = true;
-              ensureInstalled = [ ];
-            };
           };
 
           keymaps = [
@@ -165,6 +213,7 @@
             (map "<C-j>" "<C-w>j")
             (map "<C-k>" "<C-w>k")
             (map "<C-l>" "<C-w>l")
+
           ];
 
           globals = {
