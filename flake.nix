@@ -75,6 +75,7 @@
             colorscheme = "solarized-light";
           };
 
+          # See https://github.com/nix-community/nixvim/issues/1669
           extraConfigLuaPre = ''
             package.preload["jsregexp"] = package.loadlib("${pkgs.lua51Packages.jsregexp}/lib/lua/5.1/jsregexp/core.so", "luaopen_jsregexp_core");
 
@@ -205,7 +206,7 @@
             (nmap "<right>" "<Cmd>bn<CR>")
             (nmap "<left>" "<Cmd>bp<CR>")
             (nmap "<leader>x" "<Cmd>bd<CR>")
-            (nmap ";w" "<Cmd>w<CR>")
+            (nmap ";" ":")
 
             (vmap "H" "^")
             (vmap "L" "$")
@@ -262,16 +263,17 @@
               })
           '';
 
+          # Needed until https://github.com/nix-community/nixvim/issues/1675 is solved
           extraConfigLuaPost = ''
             vim.cmd [[colorscheme base16-selenized-light]];
-            '';
+          '';
 
         };
 
-        cfg' = lib.recursiveUpdate simplePluginsList' defaultSettings;
-        meow' = cfg: nixvim.legacyPackages.${system}.makeNixvim cfg;
+        cfg = lib.recursiveUpdate simplePluginsList' defaultSettings;
+        meow = cfg: nixvim.legacyPackages.${system}.makeNixvim cfg;
 
-        fn' = {
+        fn = {
           imap = imap;
           nmap = nmap;
           map = map;
@@ -280,11 +282,14 @@
       in
 
       {
-        package = {
-          cfg = cfg';
-          meow = meow';
-          fn = fn';
-          devShells.default = pkgs.mkShell { buildInputs = [ (meow' cfg') ]; };
+        packages = {
+          default = meow cfg;
+        };
+
+        lib = {
+          meow = meow;
+          cfg = cfg;
+          fn = fn;
         };
       }
     );
