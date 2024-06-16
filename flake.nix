@@ -286,6 +286,8 @@
           default = meow cfg;
         };
 
+        defaultPackage = self.packages.${system}.default;
+
         lib = {
           meow = meow;
           cfg = cfg;
