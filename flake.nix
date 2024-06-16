@@ -280,11 +280,11 @@
       in
 
       {
-        cfg = cfg';
-        meow = meow';
-        fn = fn';
-        devShells.default = pkgs.mkShell {
-          buildInputs = [ (meow' cfg') ];
+        package = {
+          cfg = cfg';
+          meow = meow';
+          fn = fn';
+          devShells.default = pkgs.mkShell { buildInputs = [ (meow' cfg') ]; };
         };
       }
     );
