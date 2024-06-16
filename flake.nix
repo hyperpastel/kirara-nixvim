@@ -8,8 +8,15 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, nixvim, flake-utils }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      nixvim,
+      flake-utils,
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
         lib = pkgs.lib;
@@ -28,7 +35,9 @@
         ];
 
         simplePluginsList' = {
-          plugins = lib.genAttrs simplePluginsList (_: { enable = true; });
+          plugins = lib.genAttrs simplePluginsList (_: {
+            enable = true;
+          });
         };
 
         imap = key: action: {
@@ -52,14 +61,11 @@
           options.silent = true;
         };
 
-        map =
-          key:
-          action:
-          {
-            key = key;
-            action = action;
-            options.silent = true;
-          };
+        map = key: action: {
+          key = key;
+          action = action;
+          options.silent = true;
+        };
 
         defaultSettings = {
           enableMan = false;
