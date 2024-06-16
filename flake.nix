@@ -69,9 +69,10 @@
 
         defaultSettings = {
           enableMan = false;
-          colorschemes.catppuccin = {
+          colorschemes.base16 = {
             enable = true;
-            settings.flavour = "frappe";
+            # TODO Replace with selenized once available
+            colorscheme = "solarized-light";
           };
 
           extraConfigLuaPre = ''
@@ -258,9 +259,12 @@
             	  end
             	end
             	}
-            })
+              })
           '';
 
+          extraConfigLuaPost = ''
+            vim.cmd [[colorscheme base16-selenized-light]];
+            '';
 
         };
 
