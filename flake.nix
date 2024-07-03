@@ -24,13 +24,10 @@
         simplePluginsList = [
           "harpoon"
           "cmp_luasnip"
-          "cmp-calc"
           "cmp-nvim-lsp"
-          "cmp-path"
           "nvim-tree"
           "nix"
           "friendly-snippets"
-          "which-key"
           "gitsigns"
         ];
 
@@ -140,6 +137,29 @@
               servers = {
                 nixd.enable = true;
                 bashls.enable = true;
+                texlab.enable = true;
+
+                rust-analyzer = {
+                  enable = true;
+                  installRustc = false;
+                  installCargo = false;
+                };
+
+                pylsp = {
+                  enable = true;
+                  settings = {
+                    plugins = {
+                      ruff = {
+                        enabled = true;
+                        select = [ "F" "E" "PLR" "Q" "W" ];
+                      };
+                      pylsp_mypy = {
+                        enabled = true;
+                        dmypy = true;
+                      };
+                    };
+                  };
+                };
               };
 
               keymaps = {
@@ -160,6 +180,23 @@
                 silent = true;
               };
 
+            };
+
+            nvim-jdtls = {
+              enable = true;
+              data = "";
+
+              extraOptions = {
+                cmd.__raw = "  {\n    \"${
+                        lib.getExe pkgs.jdt-language-server
+                      }\",\n    \"-root_dir\", vim.fs.root(0, \"pom.xml\"),\n  }\n";
+              };
+            };
+
+           vimtex = {
+              enable = true;
+              settings.view_method = "zathura";
+              texlivePackage = null;
             };
 
             cmp = {
@@ -225,6 +262,7 @@
             softtabstop = 4;
             tabstop = 4;
             noexpandtab = true;
+            maplocalleader = ".";
             mapleader = " ";
           };
 
