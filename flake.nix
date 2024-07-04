@@ -127,6 +127,11 @@
               };
             };
 
+            rustaceanvim = {
+              enable = true;
+              rustAnalyzerPackage = null;
+            };
+
             luasnip = {
               enable = true;
               fromVscode = [ { } ];
@@ -138,6 +143,7 @@
                 nixd.enable = true;
                 bashls.enable = true;
                 texlab.enable = true;
+                clangd.enable = true;
 
                 rust-analyzer = {
                   enable = true;
