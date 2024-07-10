@@ -219,8 +219,6 @@
                 sources = [
                   { name = "nvim_lsp"; }
                   { name = "luasnip"; }
-                  { name = "calc"; }
-                  { name = "path"; }
                 ];
 
                 preselect = "cmp.PreselectMode.None";
