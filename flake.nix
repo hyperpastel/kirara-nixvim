@@ -84,7 +84,7 @@
                     if luasnip.expandable() then
                         luasnip.expand()
                     else
-                        cmp.confirm({select = true})
+                        cmp.confirm({select = false})
                     end
                 else
                     fallback()
