@@ -151,21 +151,21 @@
                   installCargo = false;
                 };
 
-                pylsp = {
-                  enable = true;
-                  settings = {
-                    plugins = {
-                      ruff = {
-                        enabled = true;
-                        select = [ "F" "E" "PLR" "Q" "W" ];
-                      };
-                      pylsp_mypy = {
-                        enabled = true;
-                        dmypy = true;
-                      };
-                    };
-                  };
-                };
+                # pylsp = {
+                #   enable = true;
+                #   settings = {
+                #     plugins = {
+                #       ruff = {
+                #         enabled = true;
+                #         select = [ "F" "E" "PLR" "Q" "W" ];
+                #       };
+                #       pylsp_mypy = {
+                #         enabled = true;
+                #         dmypy = true;
+                #       };
+                #     };
+                #   };
+                # };
               };
 
               keymaps = {
